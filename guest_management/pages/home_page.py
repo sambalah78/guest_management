@@ -68,4 +68,5 @@ def home() -> rx.Component:
         ),
         width="100%",
         align="center",
+        padding_bottom="10em",
     )
