@@ -13,6 +13,7 @@ def feature_card(icon_tag: str, title: str, desc: str):
     )
 
 
+@rx.page(title="Home")
 def home() -> rx.Component:
     return rx.vstack(
         # --- Navigation (Updated to hstack) ---
