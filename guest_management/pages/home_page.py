@@ -13,7 +13,6 @@ def feature_card(icon_tag: str, title: str, desc: str):
     )
 
 
-@rx.page(title="Home")
 def home() -> rx.Component:
     return rx.vstack(
         # --- Navigation (Updated to hstack) ---
@@ -35,8 +34,13 @@ def home() -> rx.Component:
             rx.hstack(
                 rx.vstack(
                     rx.heading("Manage Guest faster wiht Us", size="9"),
-                    rx.text("No manual seacrhing, its", size="5"),
-                    rx.button("Start Now", size="3", variant="soft"),
+                    rx.text("No manual seacrhing, its automated", size="5"),
+                    rx.button(
+                        "Start Now",
+                        size="3",
+                        variant="soft",
+                        on_click=rx.scroll_to("features"),  # This matches the ID below
+                    ),
                     spacing="5",
                     padding_y="10vh",
                     align="center",

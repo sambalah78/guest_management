@@ -1,5 +1,6 @@
 import reflex as rx
 import asyncio
+from guest_management.pages.home_page import home as home_page
 
 
 # --- STATE LOGIC ---
@@ -96,4 +97,4 @@ def index() -> rx.Component:
 app = rx.App()
 # Add pages and link the splash logic to the index 'on_load'
 app.add_page(index, route="/", on_load=State.splash_logic)
-# app.add_page(home_page, route="/home")
+app.add_page(home_page, route="/home")
