@@ -35,12 +35,7 @@ def home() -> rx.Component:
                 rx.vstack(
                     rx.heading("Manage Guest faster wiht Us", size="9"),
                     rx.text("No manual seacrhing, its automated", size="5"),
-                    rx.button(
-                        "Start Now",
-                        size="3",
-                        variant="soft",
-                        on_click=rx.scroll_to("features"),  # This matches the ID below
-                    ),
+                    rx.button("Start Now", size="3", variant="soft"),
                     spacing="5",
                     padding_y="10vh",
                     align="center",
@@ -68,5 +63,4 @@ def home() -> rx.Component:
         ),
         width="100%",
         align="center",
-        padding_bottom="10em",
     )
