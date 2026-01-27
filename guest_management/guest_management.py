@@ -1,11 +1,67 @@
 import reflex as rx
 import asyncio
+import pandas as pd
+import io
 from guest_management.pages.home_page import home as home_page
-
+from guest_management.pages.sign_in import login_page
+from guest_management.pages.dashboard import dashboard
 
 # --- STATE LOGIC ---
 class State(rx.State):
     """The app state."""
+
+    username: str = ""
+    password: str = ""
+    error_message: str = ""
+    guest_data: list[dict] = []
+    columns: list[str] = []
+    selected_filename: str = ""  # The error is likely here
+    is_processing: bool = False
+
+    def handle_file_select(self, files: list[rx.UploadFile]):
+        if files:
+            # Reflex automatically creates 'set_selected_filename'
+            # only if 'selected_filename' is defined above.
+            self.selected_filename = files[0].filename
+
+    async def handle_upload(self, files: list[rx.UploadFile]):
+        if not files:
+            rx.window_alert("No file selected.")
+
+        self.is_processing = True
+        yield
+
+        for file in files:
+            upload_data = await file.read()
+            df = pd.read_excel(io.BytesIO(upload_data))
+
+            # --- Add Status Column ---
+            # We add 'Status' at the beginning (index 0) or end.
+            # This ensures every guest starts as 'Absent'.
+            if "Status" not in df.columns:
+                df["Status"] = "Absent"
+
+            df = df.fillna("")
+
+            self.columns = df.columns.tolist()
+            # Convert to list of dicts for the table
+            self.guest_data = [
+                {str(k): str(v) for k, v in record.items()}
+                for record in df.to_dict("records")
+            ]
+
+        self.is_processing = False
+        self.selected_filename = ""
+
+    def login(self):
+        """Simple authentication check."""
+        # Replace 'admin' and 'password123' with your desired credentials
+        if self.username == "admin" and self.password == "password":
+            self.error_message = ""
+            return rx.redirect("/dashboard")
+        else:
+            self.error_message = "Invalid username or password."
+            return None
 
     async def splash_logic(self):
         # Wait 2 seconds
@@ -43,58 +99,9 @@ def index() -> rx.Component:
         background="radial-gradient(circle, #ffffff 0%, #f0f0f0 100%)",
     )
 
-
-# --- PAGE: HOME ---
-# def home_page() -> rx.Component:
-#     return rx.vstack(
-#         rx.hstack(
-#             rx.heading("Empire Signature", size="7"),
-#             rx.spacer(),
-#             rx.hstack(
-#                 rx.link("Features", href="#features"),
-#                 rx.button("Get Started"),
-#                 spacing="4",
-#                 align="center",
-#             ),
-#             width="100%",
-#             padding="1.5em",
-#             border_bottom="1px solid #f0f0f0",
-#         ),
-#         rx.center(
-#             rx.hstack(
-#                 rx.vstack(
-#                     rx.heading("Manage Guest faster with Us", size="9"),
-#                     rx.text("No manual searching, it's instant.", size="5"),
-#                     rx.button("Start Now", size="3", variant="soft"),
-#                     spacing="5",
-#                     padding_y="10vh",
-#                     align="start",
-#                 ),
-#                 rx.image(
-#                     src="/empire.jpg",
-#                     width=["150px", "300px"],
-#                 ),
-#                 gap="5vw",
-#                 align="center",
-#             ),
-#             width="100%",
-#         ),
-#         rx.grid(
-#             feature_card("zap", "Fast", "Get Guest info in milliseconds."),
-#             feature_card("lock", "Secure", "Data is protected."),
-#             feature_card("code", "Simple", "Manage with ease."),
-#             columns="3",
-#             spacing="4",
-#             width="80%",
-#             id="features",
-#         ),
-#         width="100%",
-#         align="center",
-#     )
-
-
-# --- APP SETUP ---
 app = rx.App()
 # Add pages and link the splash logic to the index 'on_load'
 app.add_page(index, route="/", on_load=State.splash_logic)
 app.add_page(home_page, route="/home")
+app.add_page(login_page, route="/login")
+app.add_page(dashboard, route="/dashboard")
