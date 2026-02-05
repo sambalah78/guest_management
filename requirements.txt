@@ -1,2 +1,5 @@
 
 reflex==0.8.26
+pandas
+openpyxl
+xlrd>=2.0.1
