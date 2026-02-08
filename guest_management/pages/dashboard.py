@@ -40,7 +40,7 @@ def dashboard() -> rx.Component:
                 border=f"1px solid {GOLD}",
                 width="100%",
             ),
-            rx.upload(
+             rx.upload(
                 rx.vstack(
                     rx.button("Select Excel File", color="#D4AF37", bg="#1A1A1A", border="1px solid #D4AF37"),
                     rx.text("Drag and drop or click to upload guest list", color="gray"),

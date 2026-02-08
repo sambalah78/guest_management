@@ -18,6 +18,15 @@ class State(rx.State):
     selected_filename: str = ""  # The error is likely here
     is_processing: bool = False
 
+    # Inside class State(rx.State):
+
+    def clear_data(self):
+        """Clears all guest data from the state."""
+        self.guest_data = []
+        self.columns = []
+        self.selected_filename = ""
+        return rx.toast.info("Guest list cleared.")
+
     def handle_file_select(self, files: list[rx.UploadFile]):
         if files:
             # Reflex automatically creates 'set_selected_filename'
@@ -96,7 +105,7 @@ def index() -> rx.Component:
         ),
         width="100%",
         height="100vh",
-        background="radial-gradient(circle, #ffffff 0%, #f0f0f0 100%)",
+        background="gray",
     )
 
 app = rx.App()
