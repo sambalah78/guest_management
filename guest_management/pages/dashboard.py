@@ -1,7 +1,8 @@
 import reflex as rx
 
-from guest_management import guest_management
+from guest_management import state
 from guest_management.widget import table
+from guest_management.widget import stat_card
 
 GOLD = "#D4AF37"
 BLACK = "#111111"
@@ -9,72 +10,37 @@ DARK_GRAY = "#1A1A1A"
 TEXT_WHITE = "#FFFFFF"
 
 
-def dashboard() -> rx.Component:
+def dashboard():
     return rx.vstack(
         rx.hstack(
-            rx.heading("Dashboard", size="6", color=GOLD),
-
+            rx.heading("Empire Dashboard", color="#D4AF37"),
             rx.spacer(),
-            rx.button(
-                "Log Out",
-                on_click=rx.redirect("/"),
-                variant="outline",
-                border=f"1px solid {GOLD}",
-                color=GOLD
-            ),
-            width="100%",
-            padding="1em 2em",
-            background=DARK_GRAY,
-            border_bottom=f"1px solid {GOLD}",
+            rx.button("Log Out", on_click=rx.redirect("/"), variant="outline", color="#D4AF37"),
+            width="100%", padding="1em", bg="#1A1A1A"
         ),
-
-        rx.vstack(
-
-            rx.divider(border_color=GOLD),
-            rx.card(
-                rx.hstack(
-                    rx.heading("Guest Overview", size="4", color=GOLD),
-                    rx.text("Status: All systems operational", color="white"),
-                ),
-                background=DARK_GRAY,
-                border=f"1px solid {GOLD}",
-                width="100%",
+        rx.grid(
+            stat_card.stat_box("Total", state.State.total_count, "#D4AF37"),
+            stat_card.stat_box("Present", state.State.present_count, "#4CAF50"),
+            stat_card.stat_box("Absent", state.State.absent_count, "#F44336"),
+            columns="3", spacing="4", width="100%"
+        ),
+        rx.hstack(
+            rx.upload(rx.button("Select Excel"), id="u_guest", border="1px dashed #D4AF37", padding="1em"),
+            rx.button("Sync", on_click=state.State.handle_upload(rx.upload_files(upload_id="u_guest")), bg="#D4AF37"),
+            rx.image(src=state.State.qr_url, width="100px"),
+            width="100%", align="center"
+        ),
+        rx.input(placeholder="Search Table...", on_change=state.State.set_search_query, width="100%"),
+        rx.table.root(
+            rx.table.header(rx.table.row(rx.foreach(state.State.columns, rx.table.column_header_cell))),
+            rx.table.body(
+                rx.foreach(state.State.filtered_data, lambda row: rx.table.row(
+                    rx.foreach(state.State.columns, lambda col: rx.table.cell(
+                        rx.cond(col == "Status", rx.badge(row[col], color_scheme="green"), row[col])
+                    ))
+                ))
             ),
-            rx.upload(
-                rx.vstack(
-                    rx.button("Select Excel File", color="#D4AF37", bg="#1A1A1A", border="1px solid #D4AF37"),
-                    rx.text("Drag and drop or click to upload guest list", color="gray"),
-                ),
-                id="upload_guest",
-                border=f"1px dashed #D4AF37",
-                padding="2em",
-                border_radius="10px",
-                width="100%",
-            ),
-            rx.button(
-                "Process & Display List",
-                on_click=guest_management.State.handle_upload(rx.upload_files(upload_id="upload_guest")),
-                background="#D4AF37",
-                color="black",
-                # margin_top="1em",
-            ),
-
-            # --- The Data Table ---
-            rx.cond(
-                guest_management.State.guest_data,
-                table.guest_table(),
-                rx.center(
-                    rx.text("No guests loaded. Upload an Excel file to begin.", color="gray", margin_top="2em"),
-                    width="100%"
-                )
-            ),
-            align="start",
-            spacing="4",
             width="100%"
         ),
-
-        width="100%",
-        min_height="100vh",
-        background=BLACK,
-        padding="2em"
+        padding="2em", bg="gray", min_height="100vh"
     )
