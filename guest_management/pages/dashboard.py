@@ -18,16 +18,21 @@ def dashboard():
             rx.button("Log Out", on_click=rx.redirect("/"), variant="outline", color="#D4AF37"),
             width="100%", padding="1em", bg="#1A1A1A"
         ),
-        rx.grid(
-            stat_card.stat_box("Total", state.State.total_count, "#D4AF37"),
-            stat_card.stat_box("Present", state.State.present_count, "#4CAF50"),
-            stat_card.stat_box("Absent", state.State.absent_count, "#F44336"),
-            columns="3", spacing="4", width="100%"
-        ),
+        rx.grid(rx.hstack(
+            stat_card.stat_card("Total Guests", state.State.total_count, "users", "#D4AF37"),
+            stat_card.stat_card("Present", state.State.present_count, "check-circle", "#4CAF50"),
+            stat_card.stat_card("Absent", state.State.absent_count, "user-minus", "#F44336"),
+
+        ),width="100%", spacing="4"),
         rx.hstack(
             rx.upload(rx.button("Select Excel"), id="u_guest", border="1px dashed #D4AF37", padding="1em"),
             rx.button("Sync", on_click=state.State.handle_upload(rx.upload_files(upload_id="u_guest")), bg="#D4AF37"),
-            rx.image(src=state.State.qr_url, width="100px"),
+            rx.vstack(
+                rx.heading("Entry QR Code", size="4", color="#D4AF37"),
+                rx.image(src=state.State.qr_url, width="180px", border="5px solid white"),
+                rx.text("Scan to Check-In", color="gray", size="2"),
+                bg="#1A1A1A", padding="2em", border_radius="15px", border="1px solid #D4AF37", align="center"
+            ),
             width="100%", align="center"
         ),
         rx.input(placeholder="Search Table...", on_change=state.State.set_search_query, width="100%"),

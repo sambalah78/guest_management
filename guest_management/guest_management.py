@@ -4,8 +4,8 @@ import pandas as pd
 import io
 from guest_management.pages.home_page import home as home_page
 from guest_management.pages.sign_in import login_page
-from guest_management.pages.dashboard import dashboard
-
+from guest_management.pages import dashboard
+from guest_management.pages import check_in
 # --- STATE LOGIC ---
 class State(rx.State):
     """The app state."""
@@ -104,4 +104,5 @@ app = rx.App()
 app.add_page(index, route="/", on_load=State.splash_logic)
 app.add_page(home_page, route="/home")
 app.add_page(login_page, route="/login")
-app.add_page(dashboard, route="/dashboard")
+app.add_page(dashboard.dashboard, route="/dashboard")
+app.add_page(check_in.checkin_page, route="/check-in")
