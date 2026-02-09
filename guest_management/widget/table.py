@@ -1,42 +1,33 @@
 import reflex as rx
-from guest_management import guest_management
-
+from guest_management.state import State
 
 def guest_table() -> rx.Component:
     return rx.table.root(
         rx.table.header(
             rx.table.row(
-                rx.foreach(
-                    guest_management.State.columns,
-                    lambda col: rx.table.column_header_cell(col, color="#D4AF37")
-                )
+                rx.foreach(State.columns, lambda col: rx.table.column_header_cell(col, color="black"))
             )
         ),
         rx.table.body(
             rx.foreach(
-                guest_management.State.guest_data,
+                State.filtered_guest_data,
                 lambda row: rx.table.row(
                     rx.foreach(
-                        guest_management.State.columns,
+                        State.columns,
                         lambda col: rx.table.cell(
-                            # Conditional styling: If the column is 'Status',
-                            # give it a border/badge look.
                             rx.cond(
                                 col == "Status",
                                 rx.badge(
                                     row[col],
-                                    variant="outline",
-                                    color_scheme="gold", # Custom feel
-                                    border=f"1px solid #D4AF37"
+                                    variant="solid",
+                                    color_scheme=rx.cond(row[col] == "Present", "green", "gold")
                                 ),
-                                rx.text(row[col], color="white")
+                                rx.text(row[col], color="black")
                             )
                         )
                     )
                 )
             )
         ),
-        width="100%",
-        variant="surface",
-        margin_top="2em",
+        width="100%", variant="surface",
     )
