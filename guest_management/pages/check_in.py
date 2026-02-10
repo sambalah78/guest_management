@@ -11,7 +11,7 @@ def checkin_page():
             rx.image(src="/empire.jpg", width="80px"),
             rx.heading("Guest Check-In", size="7", color="#D4AF37"),
             rx.text("Verify your attendance below", color="gray"),
-            rx.input(placeholder="Full Name", value=State.search_name, on_change=State.set_search_name, width="100%", size="3"),
+            rx.input(placeholder="Name", value=State.search_name, on_change=State.set_search_name, width="100%", size="3"),
             rx.text("— OR —", color="gray", size="1"),
             rx.input(placeholder="Guest ID / Code", value=State.search_id, on_change=State.set_search_id, width="100%", size="3"),
             rx.button("Confirm Arrival", on_click=State.check_in_guest, bg="#D4AF37", color="black", width="100%", size="3"),

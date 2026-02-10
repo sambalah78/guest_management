@@ -23,7 +23,7 @@ def feature_card(icon_tag: str, title: str, desc: str):
 def home() -> rx.Component:
     return rx.vstack(
         rx.hstack(
-            rx.heading("Empire Signature", size="7", color=GOLD),
+            rx.heading("Empire Signature", font_size=["3","5","7","9"], color=GOLD),
             rx.spacer(),
             # rx.button(
             #     "Admin Sign In",
@@ -54,8 +54,8 @@ def home() -> rx.Component:
                     padding_y="10vh",
                     align="center",
                 ),
-                rx.image(src="empire.jpg", width="300px", border=f"1px solid {GOLD}",
-                         border_radius="15px", ),
+                rx.image(src="empire.jpg", width=["300px","350px","450px","500px"], border=f"1px solid {GOLD}",
+                         border_radius="15px",padding="1" ),
                 gap="5vw",
                 align="center",
             ),
