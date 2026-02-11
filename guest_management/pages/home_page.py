@@ -40,8 +40,8 @@ def home() -> rx.Component:
         rx.center(
             rx.hstack(
                 rx.vstack(
-                    rx.heading("Manage Guests with Elegance", size="9", color=TEXT_WHITE),
-                    rx.text("Automated solutions for the elite.", size="5", color="gray"),
+                    rx.heading("Manage Guests with Elegance", font_size=["1em",".1.5em","2em","2.5"], color=TEXT_WHITE),
+                    rx.text("Automated solutions for the elite.", font_size=["0.8em",".1.0em","1.2em","1.5"], color="gray"),
                     rx.button(
                         "Get Started",
                         size="3",
@@ -54,7 +54,7 @@ def home() -> rx.Component:
                     padding_y="10vh",
                     align="center",
                 ),
-                rx.image(src="empire.jpg", width=["300px","350px","450px","500px"], border=f"1px solid {GOLD}",
+                rx.image(src="empire.jpg", width=["100px","150px","250px","300px"], border=f"1px solid {GOLD}",
                          border_radius="15px",padding="1" ),
                 gap="5vw",
                 align="center",
