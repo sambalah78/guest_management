@@ -25,14 +25,14 @@ def home() -> rx.Component:
         rx.hstack(
             rx.heading("Empire Signature", font_size=["3","5","7","9"], color=GOLD),
             rx.spacer(),
-            # rx.button(
-            #     "Admin Sign In",
-            #     on_click=rx.redirect("/login"),
-            #     variant="ghost",
-            #     color=GOLD,
-            #     color_scheme="gold",
-            #     _hover={"background": "transparent", "opacity": "0.8"}
-            # ),
+            rx.button(
+                "Admin Sign In",
+                on_click=rx.redirect("/login"),
+                variant="ghost",
+                color=GOLD,
+                color_scheme="gold",
+                _hover={"background": "transparent", "opacity": "0.8"}
+            ),
             width="100%",
             padding="1.5em",
             border_bottom=f"1px solid {GOLD}",

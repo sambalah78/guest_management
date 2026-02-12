@@ -1,5 +1,5 @@
 import reflex as rx
-from guest_management import guest_management
+from ..state import State
 GOLD = "#D4AF37"
 BLACK = "#111111"
 DARK_GRAY = "#1A1A1A"
@@ -10,7 +10,7 @@ def login_page() -> rx.Component:
             rx.heading("Empire Login", size="7", color=GOLD),
             rx.input(
                 placeholder="Username", 
-                on_change=guest_management.State.set_username,
+                on_change=State.set_username,
                 width="100%",
                 background=BLACK,
                 border=f"1px solid {GOLD}",
@@ -19,20 +19,20 @@ def login_page() -> rx.Component:
             rx.input(
                 placeholder="Password", 
                 type="password", 
-                on_change=guest_management.State.set_password,
+                on_change=State.set_password,
                 width="100%",
                 background=BLACK,
                 border=f"1px solid {GOLD}",
                 color=TEXT_WHITE,
             ),
             rx.cond(
-                guest_management.State.error_message != "",
-                rx.text(guest_management.State.error_message, color="red", size="2"),
+                State.error_message != "",
+                rx.text(State.error_message, color="red", size="2"),
             ),
             rx.button(
                 "Sign In", 
                 width="100%", 
-                on_click=guest_management.State.login, 
+                on_click=State.login,
                 background=GOLD, 
                 color=BLACK
             ),
