@@ -1,6 +1,6 @@
 import reflex as rx
 
-from .pages import home_page,dashboard,check_in,sign_in,success
+from .pages import home_page,dashboard,sign_in,success,check_in
 from .state import State
 # --- STATE LOGIC ---
 
@@ -23,9 +23,9 @@ def index() -> rx.Component:
 app = rx.App()
 # Add pages and link the splash logic to the index 'on_load'
 app.add_page(index, route="/",)
-app.add_page(home_page.home, route="/home")
+app.add_page(home_page.home, route="/home",on_load=State.splash_logic)
 app.add_page(sign_in.login_page, route="/login")
-app.add_page(dashboard.dashboard, route="/dashboard", )
+app.add_page(dashboard.dashboard, route="/dashboard", on_load=State.refresh_dashboard )
 app.add_page(check_in.checkin_page, route="/checkin")
-app.add_page(success.success_page, route="/success")
+app.add_page(success.success_page, route="/success",on_load=State.success_redirect)
 

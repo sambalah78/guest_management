@@ -1,44 +1,49 @@
 import reflex as rx
 from ..state import State
 
-
 def checkin_page():
-    return rx.center(
-        rx.cond(
-            State.checkin_success,
-
+    return rx.box(
+        rx.center(
             rx.vstack(
-                rx.heading("✅ Check-In Successful!", size="7"),
-                rx.button(
-                    "Next Guest",
-                    on_click=State.reset_checkin,
-                    width="100%"
-                ),
-                spacing="4",
-                align="center"
-            ),
-
-            rx.vstack(
-                rx.heading("Guest Check-In", size="7"),
+                rx.heading("Guest Check-In", size="6", color="#D4AF37"),
 
                 rx.input(
-                    placeholder="Scan QR Code",
+                    placeholder="Enter Name",
+                    value=State.search_name,
+                    on_change=State.set_search_name,
+                    width="100%",
+                    size="3",
+                ),
+
+                rx.text("— OR —", size="1", color="gray"),
+
+                rx.input(
+                    placeholder="Enter Guest ID",
                     value=State.search_id,
                     on_change=State.set_search_id,
-                    auto_focus=True,
-                    width="100%"
+                    width="100%",
+                    size="3",
                 ),
 
                 rx.button(
-                    "Confirm",
+                    "Confirm Arrival",
                     on_click=State.check_in_guest,
-                    width="100%"
+                    width="100%",
+                    size="3",
+                    bg="#D4AF37",
+                    color="black",
                 ),
 
                 spacing="4",
-                width="90%",
-                max_width="400px"
-            )
+                width="100%",
+                max_width="400px",
+                padding="2em",
+                border_radius="20px",
+                bg="#1A1A1A",
+                border="1px solid #D4AF37",
+            ),
+            height="100vh",
         ),
-        height="100vh"
+        bg="#111111",
+        width="100%",
     )
